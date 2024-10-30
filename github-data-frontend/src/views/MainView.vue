@@ -2,11 +2,12 @@
   <div id="main-view">
     <div class="container">
       <div class="container-header">
-        <div style="display: flex; align-items: center; justify-content: center; flex: 1">
-          <a-radio-group size="large" v-model="type" type="button" :style="{width: '200px', height: '40px'}">
-            <a-radio :style="{width: '50%', textAlign: 'center', lineHeight: '35px'}" value="个人">个人</a-radio>
-            <a-radio :style="{width: '50%', textAlign: 'center', lineHeight: '35px'}" value="局域">局域</a-radio>
-          </a-radio-group>
+        <div  class="custom-style" style="display: flex; align-items: center; justify-content: center; flex: 1">
+<!--          <a-radio-group size="large" v-model="type" type="button" :style="{width: '200px', height: '40px'}">-->
+<!--            <a-radio :style="{width: '50%', textAlign: 'center', lineHeight: '35px'}" value="个人">个人</a-radio>-->
+<!--            <a-radio :style="{width: '50%', textAlign: 'center', lineHeight: '35px'}" value="局域">局域</a-radio>-->
+<!--          </a-radio-group>-->
+          <el-segmented v-model="value" :options="options" />
         </div>
       </div>
       <div class="container-body">
@@ -14,7 +15,7 @@
       </div>
       <div class="container-footer">
         <div style="display: flex; flex: 1; justify-content: center; align-items: center">
-          个人博客:https://yehuo.icu
+          个人博客: <el-link href="https://yehuo.icu">https://yehuo.icu</el-link>
         </div>
       </div>
     </div>
@@ -25,8 +26,11 @@
 
 import PersonalPage from "@/components/PersonalPage.vue";
 import {ref} from "vue";
+import {Link} from "@element-plus/icons-vue";
 const type = ref('个人')
+const value = ref('个人')
 
+const options = ['个人', '全球']
 </script>
 
 <style scoped>
@@ -86,13 +90,21 @@ const type = ref('个人')
   justify-content: center;
   align-items: center;
 }
-
+.custom-style .el-segmented {
+  --el-segmented-item-selected-color: var(--el-text-color-primary);
+  --el-segmented-item-selected-bg-color: #ffd100;
+  --el-border-radius-base: 16px;
+}
 input {
   -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
 }
 
 </style>
 <style>
+.el-segmented__group {
+  width: 200px;
+  height: 35px;
+}
 .arco-input-search  {
   border-radius: 40px !important;
 }
