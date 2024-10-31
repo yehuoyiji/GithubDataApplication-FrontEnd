@@ -14,8 +14,8 @@
         </a-input-search>
       </div>
       <div style="display: flex; flex: 8;">
-        <div
-            style="width: 100%; height: 100%; background-color: #f8f6f6; margin: 0 3vw; border-radius: 20px; padding: 20px 20px 0 20px; display: flex">
+        <div class="MainContent"
+             style="width: 100%; height: 100%; background-color: #f8f6f6; margin: 0 3vw; border-radius: 20px; padding: 20px 20px 0 20px; display: flex;">
           <div style="display: flex; flex: 2; flex-direction: column;">
             <!-- 头像加载动画 -->
             <div style="flex: 3; display: flex; text-align: center; align-items: center; justify-content: center;">
@@ -40,10 +40,12 @@
                   <div class="personDetail">
                     <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px">{{ personalList.name }}</div>
                     <div style="font-size: 1rem; color: #999; margin-bottom: 10px">{{ personalList?.login }}</div>
-                    <div style="font-size: 1rem; color: #000; margin-bottom: 10px"> {{personalList?.bio}} </div>
+                    <div style="font-size: 1rem; color: #000; margin-bottom: 10px"> {{ personalList?.bio }}</div>
                     <div style="margin-bottom: 5px; display: flex; align-items: center">
                       <a-space>
-                        <el-icon><Location/></el-icon>
+                        <el-icon>
+                          <Location/>
+                        </el-icon>
                         <div v-if="personalList?.location !== null">
                           {{ personalList?.location }}
                         </div>
@@ -52,14 +54,16 @@
                     </div>
                     <div style="margin-bottom: 10px; display: flex; align-items: center">
                       <a-space>
-                        <el-icon><Link /></el-icon>
+                        <el-icon>
+                          <Link/>
+                        </el-icon>
                         <el-link type="primary" :href="personalList?.blog">{{ personalList?.blog }}</el-link>
                       </a-space>
                     </div>
                     <div class="TalentRank">
-                      <div style="border-radius: 20px; width: 100%; height: 18vh; background-color: #e7dede; margin-bottom: 10px; padding: 10px ">
-                        <div style="color: #ffd100; font-family: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;">TalentRank</div>
-                      </div>
+                      <!--                      <div style="border-radius: 20px; width: 100%; height: 18vh; background-color: #e7dede; margin-bottom: 10px; padding: 10px ">-->
+                      <!--                        <div style="color: #ffd100; font-family: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;">TalentRank</div>-->
+                      <!--                      </div>-->
                     </div>
                   </div>
                 </template>
@@ -68,10 +72,68 @@
           </div>
           <div style="height: 92%; width: 1px; background-color: #e7e4e4; margin: 20px 20px 20px 0"></div>
           <div style="display: flex; flex: 8; padding: 20px; flex-direction: column">
-            <div style="display: flex; flex: 1">
-              a
+            <div style="display: flex; flex: 3">
+
+              <div
+                  style="display:flex; padding: 15px; flex: 1; border-radius: 15px; margin-right: 10px;background: -webkit-linear-gradient(left top, #EC6C6C,#FFD479,#FFFC79,#73FA79);">
+                <div style="display: flex; flex: 6; flex-direction: column; margin-right: 10px; font-weight: 700">
+                  <div style="display: flex; flex: 1; justify-content: space-between">
+                    <div style="display: flex; align-items: center">
+                      <a-space>
+                        <el-icon><Star /></el-icon>
+                        <span>获取星数（star）:</span>
+                      </a-space>
+                    </div>
+                    <div>7</div>
+                  </div>
+                  <div style="display: flex; flex: 1; justify-content: space-between">
+                    <div style="display: flex; align-items: center">
+                      <a-space>
+                        <el-icon><Coin /></el-icon>
+                        <span>累计提交数（commit）:</span>
+                      </a-space>
+                    </div>
+                    <div>66</div>
+                  </div>
+                  <div style="display: flex; flex: 1; justify-content: space-between">
+                    <div style="display: flex; align-items: center">
+                      <a-space>
+                        <el-icon><Connection /></el-icon>
+                        <span>拉取请求数（PR）:</span>
+                      </a-space>
+                    </div>
+                    <div>2</div>
+                  </div>
+                  <div style="display: flex; flex: 1; justify-content: space-between">
+                    <div style="display: flex; align-items: center">
+                      <a-space>
+                        <el-icon><Warning /></el-icon>
+                        <span>指出问题数（issue）:</span>
+                      </a-space>
+                    </div>
+                    <div>7</div>
+                  </div>
+                  <div style="display: flex; flex: 1; justify-content: space-between">
+                    <div style="display: flex; align-items: center">
+                      <a-space>
+                        <el-icon><Collection /></el-icon>
+                        <span>贡献于（去年）:</span>
+                      </a-space>
+                    </div>
+                    <div>2</div>
+                  </div>
+
+                </div>
+                <div style="display: flex; flex: 4">
+
+                </div>
+              </div>
+              <div
+                  style="display:flex; flex: 1;border-radius: 15px; margin-left: 10px;background: -webkit-linear-gradient(left top, #73FA79,#73FDFF,#D783FF);">
+
+              </div>
             </div>
-            <div style="display:flex; flex: 9">
+            <div style="display:flex; flex: 7">
               a
             </div>
 
@@ -89,7 +151,7 @@ import {IconSearch} from "@arco-design/web-vue/es/icon";
 import {onMounted, ref} from "vue";
 import {getGitHubMsgByName} from "@/api/serach";
 import {Message} from "@arco-design/web-vue";
-import {Location, Link} from "@element-plus/icons-vue";
+import {Location, Link, Star, Coin, Connection, Warning, Collection} from "@element-plus/icons-vue";
 
 const userName = ref('')
 const isSearchTrue = ref(false)
@@ -182,14 +244,20 @@ onMounted(async () => {
   height: 100%;
   padding: 20px 40px 20px 20px
 }
+
 .TalentRank {
   margin-left: -15px;
 }
+
 .container {
   width: 100%;
   height: 100%;
   display: flex;
   flex: 9;
   flex-direction: column;
+}
+
+.MainContent {
+
 }
 </style>
