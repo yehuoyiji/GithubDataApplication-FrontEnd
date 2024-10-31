@@ -15,7 +15,7 @@
       </div>
       <div style="display: flex; flex: 8;">
         <div class="MainContent"
-             style="width: 100%; height: 100%; background-color: #f8f6f6; margin: 0 3vw; border-radius: 20px; padding: 20px 20px 0 20px; display: flex;">
+             style="width: 100%; height: 100%; background-color: #f1f1f1; margin: 0 3vw; border-radius: 20px; padding: 20px 20px 0 20px; display: flex;">
           <div style="display: flex; flex: 2; flex-direction: column;">
             <!-- 头像加载动画 -->
             <div style="flex: 3; display: flex; text-align: center; align-items: center; justify-content: center;">
@@ -75,8 +75,8 @@
             <div style="display: flex; flex: 3">
 
               <div
-                  style="display:flex; padding: 15px; flex: 1; border-radius: 15px; margin-right: 10px;background: -webkit-linear-gradient(left top, #EC6C6C,#FFD479,#FFFC79,#73FA79);">
-                <div style="display: flex; flex: 6; flex-direction: column; margin-right: 10px; font-weight: 700">
+                  style="display:flex; padding: 15px; flex: 1; border-radius: 15px; margin-right: 10px;background: -webkit-linear-gradient(left top, #EC6C6C,#FFD479,#FFFC79,#73FA79); font-size: calc(100vw * 16 / 1920);">
+                <div style="display: flex; flex: 6; flex-direction: column; margin-right: 10px; font-weight: 700; margin-left: 10px">
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
                       <a-space>
@@ -84,7 +84,7 @@
                         <span>获取星数（star）:</span>
                       </a-space>
                     </div>
-                    <div>7</div>
+                    <div style="display: flex; align-items: center">7</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
@@ -93,7 +93,7 @@
                         <span>累计提交数（commit）:</span>
                       </a-space>
                     </div>
-                    <div>66</div>
+                    <div style="display: flex; align-items: center">66</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
@@ -102,7 +102,7 @@
                         <span>拉取请求数（PR）:</span>
                       </a-space>
                     </div>
-                    <div>2</div>
+                    <div style="display: flex; align-items: center">2</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
@@ -111,7 +111,7 @@
                         <span>指出问题数（issue）:</span>
                       </a-space>
                     </div>
-                    <div>7</div>
+                    <div style="display: flex; align-items: center">7</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
@@ -120,17 +120,29 @@
                         <span>贡献于（去年）:</span>
                       </a-space>
                     </div>
-                    <div>2</div>
+                    <div style="display: flex; align-items: center">2</div>
                   </div>
-
                 </div>
-                <div style="display: flex; flex: 4">
-
+                <div style="display: flex; flex: 4; justify-content: center; align-items: center;">
+                  <el-progress stroke-width="7" :striped="true" :striped-flow="true" type="dashboard" :percentage="80" color="#f56c6c">
+                    <template #default="{ percentage }">
+                      <span class="percentage-value" v-if="percentage >= 0 && percentage <= 30">
+                        C
+                      </span>
+                      <span class="percentage-value" v-else-if="percentage > 30 && percentage <= 60">
+                        B
+                      </span>
+                      <span class="percentage-value" v-if="percentage > 60 && percentage <= 100">
+                        A
+                      </span>
+<!--                      <span class="percentage-label">Progressing</span>-->
+                    </template>
+                  </el-progress>
                 </div>
               </div>
               <div
-                  style="display:flex; flex: 1;border-radius: 15px; margin-left: 10px;background: -webkit-linear-gradient(left top, #73FA79,#73FDFF,#D783FF);">
-
+                  style="display:flex; flex: 1;border-radius: 15px; margin-left: 10px;background: -webkit-linear-gradient(left top, #73FA79,#73FDFF,#D783FF); padding: 15px; width: 100%">
+                <StatisticalCard2></StatisticalCard2>
               </div>
             </div>
             <div style="display:flex; flex: 7">
@@ -152,6 +164,7 @@ import {onMounted, ref} from "vue";
 import {getGitHubMsgByName} from "@/api/serach";
 import {Message} from "@arco-design/web-vue";
 import {Location, Link, Star, Coin, Connection, Warning, Collection} from "@element-plus/icons-vue";
+import StatisticalCard2 from "@/components/StatisticalCard2.vue";
 
 const userName = ref('')
 const isSearchTrue = ref(false)
@@ -256,7 +269,23 @@ onMounted(async () => {
   flex: 9;
   flex-direction: column;
 }
-
+.percentage-value {
+  display: block;
+  //margin-top: 10px;
+  font-size: calc(100vw * 36 / 1920);
+}
+.percentage-label {
+  display: block;
+  margin-top: 10px;
+  font-size: calc(100vw * 12 / 1920);
+}
+.demo-progress .el-progress--line {
+  margin-bottom: 15px;
+  max-width: 600px;
+}
+.demo-progress .el-progress--circle {
+  margin-right: 15px;
+}
 .MainContent {
 
 }
