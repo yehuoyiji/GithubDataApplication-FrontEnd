@@ -13,13 +13,13 @@
           </template>
         </a-input-search>
       </div>
-      <div style="display: flex; flex: 8;">
+      <div style="display: flex; flex: 9;">
         <div class="MainContent"
-             style="width: 100%; height: 100%; background-color: #f1f1f1; margin: 0 3vw; border-radius: 20px; padding: 20px 20px 0 20px; display: flex;">
+             style="width: 100%; height: 100%; background-color: var(--bg-color); margin: 0 3vw; border-radius: 20px; padding: 20px 20px 0 20px; display: flex;">
           <div style="display: flex; flex: 2; flex-direction: column;">
             <!-- 头像加载动画 -->
             <div style="flex: 3; display: flex; text-align: center; align-items: center; justify-content: center;">
-              <el-skeleton :animated="true" :loading="loading" style="--el-skeleton-circle-size: 200px">
+              <el-skeleton :animated="true" :loading="loading" style="--el-skeleton-circle-size: 200px;">
                 <template #template>
                   <el-skeleton-item :animated="true" variant="circle"/>
                 </template>
@@ -30,7 +30,7 @@
               </el-skeleton>
             </div>
             <div style="display: flex; flex: 7">
-              <el-skeleton :animated="true" :loading="loading">
+              <el-skeleton :animated="true" :loading="loading" >
                 <template #template>
                   <div style="padding-right: 20px">
                     <el-skeleton style="padding: 20px -50px 0 40px;" :rows="12"></el-skeleton>
@@ -38,10 +38,10 @@
                 </template>
                 <template #default>
                   <div class="personDetail">
-                    <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px">{{ personalList.name }}</div>
-                    <div style="font-size: 1rem; color: #999; margin-bottom: 10px">{{ personalList?.login }}</div>
-                    <div style="font-size: 1rem; color: #000; margin-bottom: 10px"> {{ personalList?.bio }}</div>
-                    <div style="margin-bottom: 5px; display: flex; align-items: center">
+                    <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; color: var(--text-color)">{{ personalList.name }}</div>
+                    <div style="font-size: 1rem; color: #999; margin-bottom: 10px;">{{ personalList?.login }}</div>
+                    <div style="font-size: 1rem; color: var(--text-color); margin-bottom: 10px"> {{ personalList?.bio }}</div>
+                    <div style="margin-bottom: 5px; display: flex; align-items: center; color: var(--text-color)">
                       <a-space>
                         <el-icon>
                           <Location/>
@@ -52,7 +52,7 @@
                         <div v-else>空地址</div>
                       </a-space>
                     </div>
-                    <div style="margin-bottom: 10px; display: flex; align-items: center">
+                    <div style="margin-bottom: 10px; display: flex; align-items: center;color: var(--text-color)">
                       <a-space>
                         <el-icon>
                           <Link/>
@@ -70,9 +70,9 @@
               </el-skeleton>
             </div>
           </div>
-          <div style="height: 92%; width: 1px; background-color: #e7e4e4; margin: 20px 20px 20px 0"></div>
-          <div style="display: flex; flex: 8; padding: 20px; flex-direction: column">
-            <div style="display: flex; flex: 3">
+          <div style="height: 100%; width: 1px; background-color: #d1d9e0; margin: -30px 20px 20px 0"></div>
+          <div style="display: flex; flex: 7.5; padding: 10px 10px 20px 20px; flex-direction: column">
+            <div style="display: flex; flex: 2">
 
               <div
                   style="display:flex; padding: 15px; flex: 1; border-radius: 15px; margin-right: 10px;background: -webkit-linear-gradient(left top, #EC6C6C,#FFD479,#FFFC79,#73FA79); font-size: calc(100vw * 16 / 1920);">
@@ -145,8 +145,28 @@
                 <StatisticalCard2></StatisticalCard2>
               </div>
             </div>
-            <div style="display:flex; flex: 7">
-              a
+            <div style="display:flex; flex: 7; height: 100%; width: 100%; margin-top: 5px">
+              <div style="width: 100%; height: 100%; ">
+                <el-scrollbar  style="height: calc(100vw * 560 / 1920);overflow-x: hidden; width: 100%">
+                  <div v-for="item in 100" :key="item" class="scrollbar-demo-item">
+<!--                    <div style="width: 100%; height: 100%; display: flex;  flex-direction: column">-->
+<!--                      <div style="display: flex; flex: 1; justify-content: space-between; align-items: center">-->
+<!--                        <div>滴水表-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                          <div style="border: 1px solid #d1d9e0; padding: 2px; border-radius: 5px">-->
+<!--                            public-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                      <div style="display: flex; flex: 3">a</div>-->
+<!--                      <div style="display: flex; flex: 1">a</div>-->
+<!--                    </div>-->
+                  </div>
+                </el-scrollbar>
+<!--                <TransparentBar3D></TransparentBar3D>-->
+              </div>
+
             </div>
 
 
@@ -165,6 +185,7 @@ import {getGitHubMsgByName} from "@/api/serach";
 import {Message} from "@arco-design/web-vue";
 import {Location, Link, Star, Coin, Connection, Warning, Collection} from "@element-plus/icons-vue";
 import StatisticalCard2 from "@/components/StatisticalCard2.vue";
+import TransparentBar3D from "@/components/TransparentBar3D.vue";
 
 const userName = ref('')
 const isSearchTrue = ref(false)
@@ -274,6 +295,19 @@ onMounted(async () => {
   //margin-top: 10px;
   font-size: calc(100vw * 36 / 1920);
 }
+.scrollbar-demo-item {
+  display: inline-block;
+  height: calc(100vw * 160 / 1920);
+  margin: 10px;
+  width: calc(100vw * 655 / 1920);
+  border-radius: 10px;
+  //background: #f6e1e1;
+  border: 1px solid #d1d9e0;
+  color: #000000;
+}
+.scrollbar-demo-item[data-v-4e773cc2] {
+  margin: 10px 10px 10px 0;
+}
 .percentage-label {
   display: block;
   margin-top: 10px;
@@ -288,5 +322,11 @@ onMounted(async () => {
 }
 .MainContent {
 
+}
+
+</style>
+<style>
+.el-skeleton__item {
+  background: var(--skeleton-bg-color) !important; /* 浅灰色背景 */
 }
 </style>
