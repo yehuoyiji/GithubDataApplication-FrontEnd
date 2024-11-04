@@ -5,18 +5,22 @@
         <div  class="custom-style" style="display: flex; align-items: center; justify-content: center; flex: 1">
           <div style="display: flex; flex: 1"></div>
           <div style="display: flex; flex: 1; justify-content: center; align-items: center"><el-segmented v-model="value" :options="options" /></div>
-          <div style="display: flex; flex: 1; justify-content: end; align-items: center; padding-right: 100px">
-            <el-switch
-                v-model="lightOrDark"
-                class="mt-2"
-                style="margin-left: 24px;--el-switch-on-color: #c0bcbc; --el-switch-off-color: #13ce66"
-                inline-prompt
-                :active-icon="Moon"
-                :inactive-icon="Sunny"
-                size="large"
-                @change="changeTheme"
+          <div style="display: flex; flex: 1; justify-content: flex-end; align-items: center; ">
+            <div style="display: flex; flex: 1; align-items: center; justify-content: center"></div>
+            <div style="display: flex; flex: 1; align-items: center; justify-content: center"></div>
+            <div style="display: flex; flex: 1; align-items: center; justify-content: flex-start">
+              <el-switch
+                  v-model="lightOrDark"
+                  class="mt-2"
+                  style="margin-left: 24px;--el-switch-on-color: #c0bcbc; --el-switch-off-color: #13ce66"
+                  inline-prompt
+                  :active-icon="Moon"
+                  :inactive-icon="Sunny"
+                  size="large"
+                  @change="changeTheme"
+              />
+            </div>
 
-            />
           </div>
 
         </div>
@@ -37,9 +41,11 @@
 <script setup lang="ts">
 
 import PersonalPage from "@/components/PersonalPage.vue";
-import {ref} from "vue";
+import {inject, onBeforeUnmount, onUnmounted, onUpdated, Ref, ref} from "vue";
 import {Check, Close, Link, Moon, Sunny} from "@element-plus/icons-vue";
 import GlobalPage from "@/components/GlobalPage.vue";
+import eventBus from "@/utils/eventBus";
+import {on} from "@arco-design/web-vue/es/_utils/dom";
 const value = ref('个人')
 const options = ['个人', '全球']
 const lightOrDark = ref<boolean>(true)
@@ -50,6 +56,17 @@ const changeTheme = () => {
     document.querySelectorAll('html')[0].setAttribute('theme', 'dark')
   }
 }
+// eventBus.on("personalPageRefresh", (flag: string) => {
+//   if (flag === "个人") {
+//     value.value = "个人"
+//   }
+// })
+value.value = inject<Ref<string>>("personalPageRefresh")?.value as any || "个人"
+// if (personOrGlobal != undefined) {
+//
+//   value.value = personOrGlobal
+// }
+// value.value = inject<string>("personalPageRefresh") as any || "个人"
 
 </script>
 

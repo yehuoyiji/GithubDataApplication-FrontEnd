@@ -2,7 +2,7 @@
   <div id="personalPage">
     <div class="container">
       <div style="display: flex; flex: 1; justify-content: center;">
-        <a-input-search :loading="isSearchTrue" @search="search" v-model="userName" size="large"
+        <a-input-search :loading="isSearchTrue" @search="search(userName)" v-model="userName" size="large"
                         :style="{width:'450px', borderRadius: '30px', maxHeight:'35px'}"
                         placeholder="请输入github用户名" search-button>
           <template #button-icon>
@@ -180,26 +180,35 @@
 <script setup lang="ts">
 
 import {IconSearch} from "@arco-design/web-vue/es/icon";
-import {onMounted, ref} from "vue";
+import {inject, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref} from "vue";
 import {getGitHubMsgByName} from "@/api/serach";
 import {Message} from "@arco-design/web-vue";
 import {Location, Link, Star, Coin, Connection, Warning, Collection} from "@element-plus/icons-vue";
 import StatisticalCard2 from "@/components/StatisticalCard2.vue";
 import TransparentBar3D from "@/components/TransparentBar3D.vue";
+import eventBus from "@/utils/eventBus";
+import {useStore} from "vuex";
 
 const userName = ref('')
 const isSearchTrue = ref(false)
 const loading = ref(true)
 const personalList = ref()
+const flag = ref(true)
+const store = useStore()
+// eventBus.on("userLogin", async (login: string) => {
+//   await nextTick(async () => {
+//     await search(login)
+//   })
+// })
 
-const search = async () => {
-  if (userName.value == '') {
+const search = async (userName: string) => {
+  if (userName == '') {
     Message.error('请输入github用户名')
     return
   }
   loading.value = true
   isSearchTrue.value = true
-  const res = await getGitHubMsgByName(userName.value)
+  const res = await getGitHubMsgByName(userName)
   const ins = ref(res.data);
   if (res.data.code == 200) {
     personalList.value = ins.value.data
@@ -210,6 +219,7 @@ const search = async () => {
   }
   loading.value = false
 }
+
 
 const initPersonalPage = async () => {
 
@@ -261,10 +271,23 @@ const initPersonalPage = async () => {
   loading.value = false
   // alert(personalList.value.avatar_url)
 }
-
+// eventBus.on("initFlag", (initflag: boolean) => {
+//   flag.value = initflag
+//   console.log("initflag", initflag)
+// })
+// flag.value = inject<boolean>("initFlag") as any
+const userLogin = inject<any>("userLogin")
 onMounted(async () => {
-  await initPersonalPage()
+  if (store.state.initFlag) {
+    await initPersonalPage()
+  }
+  store.commit("changeInitFlag", false)
+  if (userLogin != undefined) {
+    await search(userLogin)
+    alert(userLogin)
+  }
 })
+
 </script>
 
 <style scoped>

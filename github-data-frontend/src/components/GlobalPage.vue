@@ -2,11 +2,36 @@
   <div id="GlobalPage">
     <div class="container">
       <div class="searchBox">
+        <div style="display: flex; flex: 1; align-items: center; justify-content: flex-end">
+          <el-select
+              placeholder="Please select"
+              size="large"
+              style="width: 240px"
+          >
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            />
+
+          </el-select>
+        </div>
+        <div style="display: flex; flex: 0.01"> </div>
+        <div style="display: flex; flex: 1; align-items: center; justify-content: flex-start">
+          <el-select
+              v-model="country"
+              :options="options"
+              placeholder="Please select"
+              size="large"
+              style="width: 240px"
+          />
+        </div>
 
       </div>
 
-      <el-scrollbar ref="scroll2"  @scroll="handleScroll" height="calc(100vw * 800 / 1920)" always="true">
-        <div v-for="user in userList" :key="user" class="scrollbar-demo-item userItem">
+      <el-scrollbar v-loading="loading" ref="scroll2"  @scroll="handleScroll" height="calc(100vw * 800 / 1920)" always="true">
+        <div v-for="(user, index) in userList" :key="user.id" class="scrollbar-demo-item userItem">
           <div class="userAvatar">
             <img :src="user.avatar_url" alt="" style="width: 50px; height: 50px; border-radius: 50%;">
           </div>
@@ -15,15 +40,22 @@
               <span class="userName">{{user.name}}</span>
               <span class="login">{{user.login}}</span>
             </div>
-            <div class="userDesc">
+            <div v-if="user.bio" class="userDesc">
               <div>{{user.bio}}</div>
             </div>
             <div class="userLocation">
-              <div>{{user.location}}</div>
+
+                <el-icon style="font-size: 18px; font-weight: bold; color: #000000; margin-right: 5px">
+                  <Location/>
+                </el-icon>
+                <div> {{user.location}}</div>
+
             </div>
           </div>
           <div class="userAction">
-
+            <el-button color="#ffd100" @click="toPersonalPage(user.login)" type="success">
+              查看主页<el-icon class="el-icon--right"><ArrowRight /></el-icon>
+            </el-button>
           </div>
         </div>
       </el-scrollbar>
@@ -33,22 +65,32 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, nextTick} from "vue";
+import {ref, onMounted, nextTick, onBeforeUnmount, onUnmounted, provide, inject} from "vue";
 import {getUserListByCondition} from "@/api/serach";
+import {ArrowRight, Location} from "@element-plus/icons-vue";
+import eventBus from "@/utils/eventBus";
+
 let scroll2 = ref();
 
 const isLoading = ref(false); // 标记是否正在加载数据
+const loading = ref(false); // 标记是否正在加载数据
+const country = ref()
+const options = [
+  {
+    label: "中国",
+    value: "China",
+  }
+]
 const handleScroll = () => {
   if (isLoading.value) {
     return;
   }
   nextTick(() => {
-
     let scroll = scroll2.value.wrapRef ;
     console.log(scroll)
     if (scroll && !isLoading.value) {
 
-      const isBottom = scroll.scrollTop + scroll.clientHeight >= scroll.scrollHeight - 100;
+      const isBottom = scroll.scrollTop + scroll.clientHeight >= scroll.scrollHeight - 50;
       if (isBottom) {
         handleScrollBottom();
       }
@@ -65,6 +107,14 @@ const handleScrollBottom = () => {
   });
 }
 
+const userLogin = ref()
+const personalPageRefresh = ref<string>("");
+provide("userLogin", userLogin)
+provide("personalPageRefresh", personalPageRefresh)
+const toPersonalPage = (login: string) => {
+  userLogin.value = login
+  personalPageRefresh.value = "个人"
+}
 const count = ref(0)
 const load = () => {
   count.value += 2
@@ -74,25 +124,28 @@ const userList = ref<any[]>([
 ]);
 
 const condition = ref({
-  country: "China",
+  country: "中国",
   language: "Java",
   pageSize: 50,
   pageNum: 1
 })
 
 const getUserList = async () => {
+  loading.value = true;
   const res = await getUserListByCondition(condition.value)
   if (res.data.code === 200) {
     for (const user of res.data.data) {
       userList.value.push(user as any)
     }
 
-    if (res.data.data.length < 10) {
+    if (userList.value.length < 10) {
       condition.value.pageNum += 1
       await getUserList()
     }
   }
+  loading.value = false;
 }
+
 onMounted(async () => {
   await getUserList()
 })
@@ -110,28 +163,54 @@ onMounted(async () => {
 }
 
 .searchBox {
+  display: flex;
   min-height: calc(100vw * 60 / 1920);
 }
 .userNameAndLogin {
   display: flex;
   flex: 1;
   align-items: center;
+
 }
+.userAction {
+  display: flex;
+  flex: 2;
+  align-items: center;
+  justify-content: flex-end;
+}
+.userName {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  //font-weight: bold;
+  margin-right: 10px;
+  color: var(--text-color)
+}
+
 .userDesc {
   display: flex;
   flex: 1;
   align-items: center;
+  color: #666;
 }
 .userLocation {
   display: flex;
   flex: 1;
   align-items: center;
+  color: #666;
 }
 .userItem {
   display: flex;
   border-bottom: 1px solid #d5d4d4;
-  height: 80px;
+  height: 100px;
   margin: 0 20px;
+}
+.login {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #999;
+  margin-left: 5px;
 }
 
 .userAvatar {
