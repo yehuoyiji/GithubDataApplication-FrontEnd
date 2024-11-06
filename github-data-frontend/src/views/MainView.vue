@@ -27,7 +27,7 @@
       </div>
       <div class="container-body">
         <PersonalPage v-if="value === '个人'"></PersonalPage>
-        <GlobalPage v-if="value === '全球'"></GlobalPage>
+        <GlobalPage @personalPageRefresh="getChange" v-if="value === '全球'"></GlobalPage>
       </div>
       <div class="container-footer">
         <div style="display: flex; flex: 1; justify-content: center; align-items: center">
@@ -41,11 +41,11 @@
 <script setup lang="ts">
 
 import PersonalPage from "@/components/PersonalPage.vue";
-import {inject, onBeforeUnmount, onUnmounted, onUpdated, Ref, ref} from "vue";
+import {onUnmounted,ref} from "vue";
 import {Check, Close, Link, Moon, Sunny} from "@element-plus/icons-vue";
 import GlobalPage from "@/components/GlobalPage.vue";
-import eventBus from "@/utils/eventBus";
-import {on} from "@arco-design/web-vue/es/_utils/dom";
+
+import Bus from "@/utils/Bus";
 const value = ref('个人')
 const options = ['个人', '全球']
 const lightOrDark = ref<boolean>(true)
@@ -56,17 +56,16 @@ const changeTheme = () => {
     document.querySelectorAll('html')[0].setAttribute('theme', 'dark')
   }
 }
-// eventBus.on("personalPageRefresh", (flag: string) => {
-//   if (flag === "个人") {
-//     value.value = "个人"
-//   }
-// })
-value.value = inject<Ref<string>>("personalPageRefresh")?.value as any || "个人"
-// if (personOrGlobal != undefined) {
-//
-//   value.value = personOrGlobal
-// }
-// value.value = inject<string>("personalPageRefresh") as any || "个人"
+const getChange = (item: string) => {
+  console.log("子传父", item)
+  value.value = item
+}
+Bus.on("personalPageRefresh", (data) => {
+  value.value = data as any
+})
+onUnmounted(() => {
+  Bus.off("personalPageRefresh")
+})
 
 </script>
 

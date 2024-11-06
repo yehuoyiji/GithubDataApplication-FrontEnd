@@ -65,16 +65,20 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, nextTick, onBeforeUnmount, onUnmounted, provide, inject} from "vue";
+import {ref, onMounted, nextTick} from "vue";
 import {getUserListByCondition} from "@/api/serach";
 import {ArrowRight, Location} from "@element-plus/icons-vue";
-import eventBus from "@/utils/eventBus";
+
+
+import Bus from "@/utils/Bus";
+import store from "@/store";
 
 let scroll2 = ref();
 
 const isLoading = ref(false); // 标记是否正在加载数据
 const loading = ref(false); // 标记是否正在加载数据
 const country = ref()
+
 const options = [
   {
     label: "中国",
@@ -109,11 +113,15 @@ const handleScrollBottom = () => {
 
 const userLogin = ref()
 const personalPageRefresh = ref<string>("");
-provide("userLogin", userLogin)
-provide("personalPageRefresh", personalPageRefresh)
+
+const flag = ref("个人")
+
 const toPersonalPage = (login: string) => {
   userLogin.value = login
-  personalPageRefresh.value = "个人"
+  Bus.emit("userLogin", userLogin.value)
+  store.commit("changeUserLogin", userLogin.value)
+  Bus.emit("personalPageRefresh", flag.value)
+
 }
 const count = ref(0)
 const load = () => {

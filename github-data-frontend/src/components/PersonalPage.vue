@@ -180,14 +180,14 @@
 <script setup lang="ts">
 
 import {IconSearch} from "@arco-design/web-vue/es/icon";
-import {inject, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref} from "vue";
+import {onBeforeUnmount, onMounted, onUnmounted, ref} from "vue";
 import {getGitHubMsgByName} from "@/api/serach";
 import {Message} from "@arco-design/web-vue";
 import {Location, Link, Star, Coin, Connection, Warning, Collection} from "@element-plus/icons-vue";
 import StatisticalCard2 from "@/components/StatisticalCard2.vue";
-import TransparentBar3D from "@/components/TransparentBar3D.vue";
-import eventBus from "@/utils/eventBus";
+
 import {useStore} from "vuex";
+import Bus from "@/utils/Bus";
 
 const userName = ref('')
 const isSearchTrue = ref(false)
@@ -195,11 +195,7 @@ const loading = ref(true)
 const personalList = ref()
 const flag = ref(true)
 const store = useStore()
-// eventBus.on("userLogin", async (login: string) => {
-//   await nextTick(async () => {
-//     await search(login)
-//   })
-// })
+
 
 const search = async (userName: string) => {
   if (userName == '') {
@@ -264,30 +260,40 @@ const initPersonalPage = async () => {
       "created_at": "2023-07-06T05:47:20Z",
       "updated_at": "2024-10-29T12:32:49Z"
     }
-    // alert(personalList.value)
+
   } else {
     Message.error(ins.value.msg)
   }
   loading.value = false
-  // alert(personalList.value.avatar_url)
+
 }
-// eventBus.on("initFlag", (initflag: boolean) => {
-//   flag.value = initflag
-//   console.log("initflag", initflag)
-// })
-// flag.value = inject<boolean>("initFlag") as any
-const userLogin = inject<any>("userLogin")
+
+const userLogin = ref('')
+// const userLogin = inject<any>("userLogin")
+onBeforeUnmount(() => {
+  Bus.on("userLogin", (data) => {
+    userLogin.value = data as any
+    userName.value = userLogin.value
+    search(userLogin.value)
+  })
+
+})
+Bus.on("userLogin", (data) => {
+  alert(data)
+  userLogin.value = data as any
+  userName.value = userLogin.value
+  search(userLogin.value)
+})
 onMounted(async () => {
-  if (store.state.initFlag) {
-    await initPersonalPage()
+  if (userName.value == '') {
+    userName.value = store.state.userLogin
+    await search(userName.value)
   }
   store.commit("changeInitFlag", false)
-  if (userLogin != undefined) {
-    await search(userLogin)
-    alert(userLogin)
-  }
 })
-
+onUnmounted(() => {
+  Bus.off("userLogin")
+})
 </script>
 
 <style scoped>

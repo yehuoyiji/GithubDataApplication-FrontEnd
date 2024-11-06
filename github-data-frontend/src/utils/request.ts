@@ -8,7 +8,7 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use((config: any) => {
-    console.log('Request intercepted', config)
+    console.log('Request intercepted', config.response)
     return config
 })
 
