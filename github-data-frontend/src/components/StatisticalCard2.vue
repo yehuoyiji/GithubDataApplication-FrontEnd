@@ -1,55 +1,23 @@
 <template>
   <div class="StatisticalCard2">
     <div style="display:flex; flex: 1; justify-content: center; align-items: center; flex-direction: column">
-      <el-statistic style="font-size: 18px" title="本月提交数" :value="outputValue1"/>
-      <div class="statistic-footer">
-        <div class="footer-item">
-          <span>相比于上月</span>
-          <span class="red">
-              12%
-              <el-icon>
-                <CaretBottom />
-              </el-icon>
-            </span>
-        </div>
-      </div>
+      <el-statistic style="font-size: 18px" title="公开仓库数" :value="user_data?.repositoryCount"/>
     </div>
     <div style="display:flex; flex: 1; justify-content: center; align-items: center; flex-direction: column">
-      <el-statistic title="本月PR数" :value="outputValue2"></el-statistic>
-      <div class="statistic-footer">
-        <div class="footer-item">
-          <span>相比于上月</span>
-          <span class="red">
-              12%
-              <el-icon>
-                <CaretBottom />
-              </el-icon>
-            </span>
-        </div>
-      </div>
+      <el-statistic title="总粉丝数" :value="user_data?.follwerCount"></el-statistic>
     </div>
     <div style="display:flex; flex: 1; justify-content: center; align-items: center; flex-direction: column">
-      <el-statistic title="本月代码量" :value="outputValue3"/>
-      <div class="statistic-footer">
-        <div class="footer-item">
-          <span>相比于上月</span>
-          <span class="red">
-              12%
-              <el-icon>
-                <CaretBottom />
-              </el-icon>
-            </span>
-        </div>
-      </div>
+      <el-statistic title="总关注数" :value="user_data?.followingCount"/>
     </div>
 
   </div>
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue'
+import {onBeforeUnmount, onMounted, ref} from 'vue'
 import {useTransition} from '@vueuse/core'
 import {CaretBottom, ChatLineRound, Male} from '@element-plus/icons-vue'
+import Bus from "@/utils/Bus";
 
 const source1 = ref(0)
 const source2 = ref(0)
@@ -62,6 +30,16 @@ const outputValue2 = useTransition(source2, {
 })
 const outputValue1 = useTransition(source1, {
   duration: 1500,
+})
+const user_data = ref()
+onMounted(() => {
+  Bus.on("UserData", (data) => {
+    user_data.value = data
+  })
+})
+
+onBeforeUnmount(() => {
+  Bus.off("UserData")
 })
 source1.value = 268500
 source2.value = 138

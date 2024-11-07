@@ -231,7 +231,11 @@ const loading = ref(true)
 const personalList = ref()
 const flag = ref(true)
 const store = useStore()
-
+const repositoryData = ref({
+  repositoryCount: 0,
+  follwerCount: 0,
+  followingCount: 0,
+})
 
 const search = async (userName: string) => {
   if (userName == '') {
@@ -257,9 +261,14 @@ const search = async (userName: string) => {
   }
   const ress = await getUserStatistics1(userName)
   card1.value = JSON.parse(JSON.stringify(ress))
+  repositoryData.value.repositoryCount = personalList.value.public_repos
+  repositoryData.value.follwerCount = personalList.value.followers
+  repositoryData.value.followingCount = personalList.value.following
+  Bus.emit("UserData", repositoryData.value)
   await getRepositoryData(userName)
   loading.value = false
 }
+
 const RepositoryData = ref([])
 const allStarCount = ref(0)
 const score = ref(0)
