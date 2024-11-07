@@ -334,7 +334,7 @@ onMounted(async () => {
 }
 .userItem {
   display: flex;
-  border-bottom: 1px solid #d5d4d4;
+  border-bottom: 1px solid var(--border-color);
   height: 100px;
   margin: 0 20px;
 }

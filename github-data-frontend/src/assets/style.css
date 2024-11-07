@@ -5,6 +5,9 @@
     --skeleton-bg-color: #f5f5f5;
     --repository-name-color: #000000;
     --repository-description-color: #59636e;
+    --border-color: #d1d9e0;
+    --repository-topic-color: #0969da;
+    --repository-topic-bg-color: #ddf4ff;
 }
 
 :root[theme='dark'] {
@@ -13,4 +16,7 @@
     --skeleton-bg-color: #2c2c2c;
     --repository-name-color: #4493f8;
     --repository-description-color: #59636e;
+    --border-color: #333;
+    --repository-topic-color: #4493f8;
+    --repository-topic-bg-color: #388bfd1a;
 }

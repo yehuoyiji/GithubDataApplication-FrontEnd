@@ -73,7 +73,7 @@
               </el-skeleton>
             </div>
           </div>
-          <div style="height: 100%; width: 1px; background-color: #d1d9e0; margin: -30px 20px 20px 0"></div>
+          <div style="height: 100%; width: 1px; background-color: var(--border-color); margin: -30px 20px 20px 0"></div>
           <div style="display: flex; flex: 7.5; padding: 10px 10px 20px 20px; flex-direction: column">
             <div style="display: flex; flex: 2">
 
@@ -176,7 +176,7 @@
                         <div style="display: inline-block; width: 100%; ">
                           <a-space>
                           <span v-for="(topic, index) in item?.topics">
-                            <span  v-if="index < 10" style="background-color: #ddf4ff; font-weight: 500; border: 0; padding: 5px 10px; border-radius: 15px; color: #0969da"> {{ topic }}</span>
+                            <span  v-if="index < 10" style="background-color: var(--repository-topic-bg-color); font-weight: 500; border: 0; padding: 5px 10px; border-radius: 15px; color: var(--repository-topic-color)"> {{ topic }}</span>
                           </span>
                           </a-space>
                         </div>
@@ -193,7 +193,7 @@
                           <el-icon style="color: var(--text-color)"><Star /></el-icon>
                           <span style="color: #59636e">{{item?.stargazers_count}}</span>
                         </div>
-<!--                        <span>•</span>-->
+
                       </div>
                     </div>
                   </div>
@@ -233,7 +233,7 @@ const flag = ref(true)
 const store = useStore()
 const repositoryData = ref({
   repositoryCount: 0,
-  follwerCount: 0,
+  followerCount: 0,
   followingCount: 0,
 })
 
@@ -260,9 +260,9 @@ const search = async (userName: string) => {
     isSearchTrue.value = false
   }
   const ress = await getUserStatistics1(userName)
-  card1.value = JSON.parse(JSON.stringify(ress))
+  card1.value = JSON.parse(JSON.stringify(ress)) || {}
   repositoryData.value.repositoryCount = personalList.value.public_repos
-  repositoryData.value.follwerCount = personalList.value.followers
+  repositoryData.value.followerCount = personalList.value.followers
   repositoryData.value.followingCount = personalList.value.following
   Bus.emit("UserData", repositoryData.value)
   await getRepositoryData(userName)
@@ -278,57 +278,6 @@ const getRepositoryData = async (userName: string) => {
   score.value = res.data[1]
 
 }
-const initPersonalPage = async () => {
-
-  loading.value = true
-  const res = await getGitHubMsgByName("yehuoyiji")
-  const ins = ref(res.data);
-  // alert(ins.value.data)
-  if (res.data.code == 200) {
-    // personalList.value = JSON.parse(ins.value.data)
-    personalList.value = {
-      "login": "yehuoyiji",
-      "id": 138753957,
-      "node_id": "U_kgDOCEU3pQ",
-      "avatar_url": "https://avatars.githubusercontent.com/u/138753957?v=4",
-      "gravatar_id": "",
-      "url": "https://api.github.com/users/yehuoyiji",
-      "html_url": "https://github.com/yehuoyiji",
-      "followers_url": "https://api.github.com/users/yehuoyiji/followers",
-      "following_url": "https://api.github.com/users/yehuoyiji/following{/other_user}",
-      "gists_url": "https://api.github.com/users/yehuoyiji/gists{/gist_id}",
-      "starred_url": "https://api.github.com/users/yehuoyiji/starred{/owner}{/repo}",
-      "subscriptions_url": "https://api.github.com/users/yehuoyiji/subscriptions",
-      "organizations_url": "https://api.github.com/users/yehuoyiji/orgs",
-      "repos_url": "https://api.github.com/users/yehuoyiji/repos",
-      "events_url": "https://api.github.com/users/yehuoyiji/events{/privacy}",
-      "received_events_url": "https://api.github.com/users/yehuoyiji/received_events",
-      "type": "User",
-      "user_view_type": "public",
-      "site_admin": false,
-      "name": "野火一季",
-      "company": null,
-      "blog": "https://yehuo.icu",
-      "location": null,
-      "email": null,
-      "hireable": null,
-      "bio": "一个疯狂的coder",
-      "twitter_username": null,
-      "public_repos": 8,
-      "public_gists": 0,
-      "followers": 6,
-      "following": 7,
-      "created_at": "2023-07-06T05:47:20Z",
-      "updated_at": "2024-10-29T12:32:49Z"
-    }
-
-  } else {
-    Message.error(ins.value.msg)
-  }
-  loading.value = false
-
-}
-
 const userLogin = ref('')
 
 onBeforeUnmount(() => {
@@ -340,7 +289,6 @@ onBeforeUnmount(() => {
   })
 })
 Bus.on("userLogin", (data) => {
-  // alert(data)
   userLogin.value = data as any
   userName.value = userLogin.value
   search(userLogin.value)
@@ -408,7 +356,7 @@ onUnmounted(() => {
   width: 96.5%;
   border-radius: 10px;
   //background: #f6e1e1;
-  border: 1px solid #d1d9e0;
+  border: 1px solid var(--border-color);
   color: #000000;
 
 }
