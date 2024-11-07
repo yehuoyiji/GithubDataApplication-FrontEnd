@@ -2,14 +2,17 @@
   <div id="GlobalPage">
     <div class="container">
       <div class="searchBox">
+        <div style="display: flex; flex: 1; "></div>
         <div style="display: flex; flex: 1; align-items: center; justify-content: flex-end">
           <el-select
-              placeholder="Please select"
-              size="large"
+              placeholder="选择国家"
+              size="medium"
               style="width: 240px"
+              v-model="region"
+              :clearable="true"
           >
             <el-option
-                v-for="item in options"
+                v-for="item in regionOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -20,14 +23,26 @@
         <div style="display: flex; flex: 0.01"> </div>
         <div style="display: flex; flex: 1; align-items: center; justify-content: flex-start">
           <el-select
-              v-model="country"
-              :options="options"
-              placeholder="Please select"
-              size="large"
+              v-model="language"
+              :options="languageOptions"
+              placeholder="选择领域"
+              size="medium"
               style="width: 240px"
-          />
+              :clearable="true"
+          >
+            <el-option
+                v-for="item in languageOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            />
+          </el-select>
         </div>
-
+        <div style="display: flex; flex: 1; align-items: center; justify-content: flex-start">
+          <el-button color="#ffd100" @click="GlobalSearch()" type="success">
+            搜索<el-icon style="display: flex; align-items: center; justify-content: center; margin-left: 5px"><Search /></el-icon>
+          </el-button>
+        </div>
       </div>
 
       <el-scrollbar v-loading="loading" ref="scroll2"  @scroll="handleScroll" height="calc(100vw * 800 / 1920)" always="true">
@@ -38,10 +53,18 @@
           <div class="userInfo">
             <div class="userNameAndLogin">
               <span class="userName">{{user.name}}</span>
-              <span class="login">{{user.login}}</span>
+              <span class="login">{{user?.login}}</span>
+              <el-rate
+                  :model-value="user.score / 20"
+                  disabled
+                  show-score
+                  text-color="#ff9900"
+                  :score-template="user.score.toFixed(1) + '分'"
+                  style="margin-left: 10px"
+              />
             </div>
             <div v-if="user.bio" class="userDesc">
-              <div>{{user.bio}}</div>
+              <div>{{user?.bio}}</div>
             </div>
             <div class="userLocation">
 
@@ -67,7 +90,7 @@
 <script setup lang="ts">
 import {ref, onMounted, nextTick} from "vue";
 import {getUserListByCondition} from "@/api/serach";
-import {ArrowRight, Location} from "@element-plus/icons-vue";
+import {ArrowRight, CirclePlus, Location, Search} from "@element-plus/icons-vue";
 
 
 import Bus from "@/utils/Bus";
@@ -78,13 +101,115 @@ let scroll2 = ref();
 const isLoading = ref(false); // 标记是否正在加载数据
 const loading = ref(false); // 标记是否正在加载数据
 const country = ref()
-
-const options = [
+const region = ref(null)
+const regionOptions = [
   {
     label: "中国",
     value: "China",
+  },
+  {
+    label: "美国",
+     value: "America",
+  },
+  {
+    label: "日本",
+    value: "Japan",
+  },
+  {
+    label: "韩国",
+    value: "Korea",
+  },
+  {
+    label: "俄罗斯",
+    value: "Russia",
+  },
+  {
+    label: "阿根廷",
+    value: "Argentina",
+  },
+  {
+    label: "加拿大",
+    value: "Canada",
+  },
+  {
+    label: "澳大利亚",
+    value: "Australia",
+  },
+  {
+    label: "新西兰",
+    value: "New Zealand",
+  },
+  {
+    label: "法国",
+    value: "France"
+  },
+  {
+    label: "德国",
+    value: "Germany"
+  },
+  {
+    label: "意大利",
+    value: "Italy",
   }
 ]
+const language = ref(null)
+const languageOptions = [
+  {
+    label: "Java",
+    value: "Java",
+  },
+  {
+    label: "Python",
+    value: "Python",
+  },
+  {
+    label: "JavaScript",
+    value: "JavaScript",
+  },
+  {
+    label: "C++",
+    value: "C++",
+  },
+  {
+    label: "C#",
+    value: "C#",
+  },
+  {
+    label: "PHP",
+    value: "PHP",
+  },
+  {
+    label: "Swift",
+    value: "Swift",
+  },
+  {
+    label: "Ruby",
+    value: "Ruby",
+  },
+  {
+    label: "Go",
+    value: "Go",
+  },
+  {
+    label: "Kotlin",
+    value: "Kotlin",
+  },
+  {
+    label: "Scala",
+    value: "Scala",
+  },
+  {
+    label: "TypeScript",
+    value: "TypeScript",
+  }
+]
+const GlobalSearch = async () => {
+  condition.value.language = language.value || "Java"
+  condition.value.country = region.value || "China"
+  userList.value = []
+  condition.value.pageNum = 1
+  await getUserList()
+}
 const handleScroll = () => {
   if (isLoading.value) {
     return;
@@ -132,8 +257,8 @@ const userList = ref<any[]>([
 ]);
 
 const condition = ref({
-  country: "中国",
-  language: "Java",
+  country: region.value || "中国",
+  language: language.value ||"Java",
   pageSize: 50,
   pageNum: 1
 })
@@ -144,8 +269,8 @@ const getUserList = async () => {
   if (res.data.code === 200) {
     for (const user of res.data.data) {
       userList.value.push(user as any)
+      userList.value.sort((a, b) => b.score - a.score)
     }
-
     if (userList.value.length < 10) {
       condition.value.pageNum += 1
       await getUserList()

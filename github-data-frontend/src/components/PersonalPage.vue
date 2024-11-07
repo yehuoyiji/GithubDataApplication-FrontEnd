@@ -48,7 +48,7 @@
                     </div>
                     <div style="margin-bottom: 5px; display: flex; align-items: center; color: var(--text-color)">
                       <a-space>
-                        <el-icon>
+                        <el-icon color="var(--text-color)">
                           <Location/>
                         </el-icon>
                         <div v-if="personalList?.location !== null">
@@ -57,7 +57,7 @@
                         <div v-else>空地址</div>
                       </a-space>
                     </div>
-                    <div style="margin-bottom: 10px; display: flex; align-items: center;color: var(--text-color)">
+                    <div v-if='personalList?.blog !== null' style="margin-bottom: 10px; display: flex; align-items: center;color: var(--text-color)">
                       <a-space>
                         <el-icon>
                           <Link/>
@@ -66,9 +66,7 @@
                       </a-space>
                     </div>
                     <div class="TalentRank">
-                      <!--                      <div style="border-radius: 20px; width: 100%; height: 18vh; background-color: #e7dede; margin-bottom: 10px; padding: 10px ">-->
-                      <!--                        <div style="color: #ffd100; font-family: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;">TalentRank</div>-->
-                      <!--                      </div>-->
+
                     </div>
                   </div>
                 </template>
@@ -140,19 +138,24 @@
                   </div>
                 </div>
                 <div style="display: flex; flex: 4; justify-content: center; align-items: center;">
-                  <el-progress stroke-width="7" :striped="true" :striped-flow="true" type="dashboard" :percentage="80"
+                  <el-progress stroke-width="7" :striped="true" :striped-flow="true" type="dashboard" :percentage="(score / 5).toFixed(0)"
                                color="#f56c6c">
                     <template #default="{ percentage }">
-                      <span class="percentage-value" v-if="percentage >= 0 && percentage <= 30">
+                      <span class="percentage-value" v-if="percentage >= 0 && percentage <= 20">
+                        D
+                      </span>
+                      <span class="percentage-value" v-else-if="percentage > 20 && percentage <= 40">
                         C
                       </span>
-                      <span class="percentage-value" v-else-if="percentage > 30 && percentage <= 60">
+                      <span class="percentage-value" v-if="percentage > 40 && percentage <= 60">
                         B
                       </span>
-                      <span class="percentage-value" v-if="percentage > 60 && percentage <= 100">
+                      <span class="percentage-value" v-if="percentage > 60 && percentage <= 80">
                         A
                       </span>
-                      <!--                      <span class="percentage-label">Progressing</span>-->
+                      <span class="percentage-value" v-if="percentage > 80 && percentage <= 100">
+                        A+
+                      </span>
                     </template>
                   </el-progress>
                 </div>
@@ -166,29 +169,17 @@
               <div style="width: 100%; height: 100%;   overflow-x: hidden;">
                 <el-scrollbar style="height: calc(100vw * 560 / 1920);overflow-x: hidden; width: 100%; ">
                   <div v-for="item in RepositoryData" :key="item" class="scrollbar-demo-item">
-                    <!--                    <div style="width: 100%; height: 100%; display: flex;  flex-direction: column">-->
-                    <!--                      <div style="display: flex; flex: 1; justify-content: space-between; align-items: center">-->
-                    <!--                        <div>滴水表-->
-                    <!--                        </div>-->
-                    <!--                        <div>-->
-                    <!--                          <div style="border: 1px solid #d1d9e0; padding: 2px; border-radius: 5px">-->
-                    <!--                            public-->
-                    <!--                          </div>-->
-                    <!--                        </div>-->
-                    <!--                      </div>-->
-                    <!--                      <div style="display: flex; flex: 3">a</div>-->
-                    <!--                      <div style="display: flex; flex: 1">a</div>-->
-                    <!--                    </div>-->
                     <div style="width: 100%; height: 100%; padding: 0 20px; display: flex; flex-direction: column">
                       <div style="color: var(--repository-name-color); font-size: 18px; flex: 1;display: flex; align-items: center">{{ item.name }}</div>
                       <div style="color: var(--repository-description-color); flex: 1;display: flex; align-items: center">{{ item.description }}</div>
                       <div v-if="item?.topics.length > 0" style="flex: 1;display: flex; align-items: center">
-                        <a-space>
-                          <span v-for="topic in item?.topics">
-                            <span style="background-color: #ddf4ff; font-weight: 500; border: 0; padding: 5px 10px; border-radius: 15px; color: #0969da"> {{ topic }}</span>
-                        </span>
-                        </a-space>
-
+                        <div style="display: inline-block; width: 100%; ">
+                          <a-space>
+                          <span v-for="(topic, index) in item?.topics">
+                            <span  v-if="index < 10" style="background-color: #ddf4ff; font-weight: 500; border: 0; padding: 5px 10px; border-radius: 15px; color: #0969da"> {{ topic }}</span>
+                          </span>
+                          </a-space>
+                        </div>
                       </div>
                       <div
                           style="flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-items: center">
@@ -199,7 +190,7 @@
                         </div>
                         <span v-if="item.language">•</span>
                         <div style="display: flex; gap: 4px; align-items: center" >
-                          <el-icon><Star /></el-icon>
+                          <el-icon style="color: var(--text-color)"><Star /></el-icon>
                           <span style="color: #59636e">{{item?.stargazers_count}}</span>
                         </div>
 <!--                        <span>•</span>-->
@@ -207,7 +198,6 @@
                     </div>
                   </div>
                 </el-scrollbar>
-                <!--                <TransparentBar3D></TransparentBar3D>-->
               </div>
 
             </div>
@@ -233,6 +223,7 @@ import {useStore} from "vuex";
 import Bus from "@/utils/Bus";
 
 import getUserStatistics1 from "@/utils/Graphql";
+import inferLocationFromRelations from "@/utils/getLocationByRelationShip";
 
 const userName = ref('')
 const isSearchTrue = ref(false)
@@ -254,17 +245,29 @@ const search = async (userName: string) => {
   if (res.data.code == 200) {
     personalList.value = ins.value.data
     isSearchTrue.value = false
+    if (personalList.value.location == null) {
+      personalList.value.location = await inferLocationFromRelations(userName) as any
+    }
+    if (personalList.value.blog === null || personalList.value.blog === ""){
+      personalList.value.blog = null;
+    }
   } else {
     Message.error(ins.value.msg)
     isSearchTrue.value = false
   }
+  const ress = await getUserStatistics1(userName)
+  card1.value = JSON.parse(JSON.stringify(ress))
+  await getRepositoryData(userName)
   loading.value = false
 }
 const RepositoryData = ref([])
 const allStarCount = ref(0)
+const score = ref(0)
 const getRepositoryData = async (userName: string) => {
   const res = await getRepositoryByName(userName);
-  RepositoryData.value = res.data
+  RepositoryData.value = res.data[0];
+  score.value = res.data[1]
+
 }
 const initPersonalPage = async () => {
 
@@ -336,6 +339,7 @@ Bus.on("userLogin", (data) => {
 
 })
 const card1 = ref()
+const location = ref('')
 onMounted(async () => {
   if (userName.value == '') {
     userName.value = store.state.userLogin
@@ -343,11 +347,14 @@ onMounted(async () => {
     await getRepositoryData(userName.value)
   }
   store.commit("changeInitFlag", false)
-  const res = await getUserStatistics1("yehuoyiji")
+  const res = await getUserStatistics1(userName.value)
   card1.value = JSON.parse(JSON.stringify(res))
-  // const res = await getUserStatistics("cool-icu0")
-  // console.log(res)
-  console.log(card1.value)
+
+  // let stringPromise = inferLocationFromRelations("lhccong");
+  if (personalList.value.location == null) {
+    personalList.value.location = await inferLocationFromRelations(userName.value) as any
+  }
+
 })
 onUnmounted(() => {
   Bus.off("userLogin")
