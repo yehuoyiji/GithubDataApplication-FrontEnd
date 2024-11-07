@@ -90,7 +90,8 @@
                         <span>获取星数（star）:</span>
                       </a-space>
                     </div>
-                    <div style="display: flex; align-items: center">{{card1?.totalStars}}</div>
+                    <div style="display: flex; align-items: center" v-if="card1?.totalStars">{{card1?.totalStars}}</div>
+                    <div style="display: flex; align-items: center" v-else>暂无数据</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
@@ -101,7 +102,8 @@
                         <span>累计提交数（commit）:</span>
                       </a-space>
                     </div>
-                    <div style="display: flex; align-items: center">{{card1?.totalCommits}}</div>
+                    <div style="display: flex; align-items: center" v-if="card1?.totalCommits">{{card1?.totalCommits}}</div>
+                    <div style="display: flex; align-items: center" v-else>暂无数据</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
@@ -112,7 +114,8 @@
                         <span>拉取请求数（PR）:</span>
                       </a-space>
                     </div>
-                    <div style="display: flex; align-items: center">{{card1?.totalPRCount}}</div>
+                    <div style="display: flex; align-items: center" v-if="card1?.totalPRCount">{{card1?.totalPRCount}}</div>
+                    <div style="display: flex; align-items: center" v-else>暂无数据</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
@@ -123,7 +126,8 @@
                         <span>指出问题数（issue）:</span>
                       </a-space>
                     </div>
-                    <div style="display: flex; align-items: center">{{card1?.totalIssues}}</div>
+                    <div style="display: flex; align-items: center" v-if="card1?.totalIssues">{{card1?.totalIssues}}</div>
+                    <div style="display: flex; align-items: center" v-else>暂无数据</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
@@ -134,7 +138,8 @@
                         <span>贡献于（去年）:</span>
                       </a-space>
                     </div>
-                    <div style="display: flex; align-items: center">{{card1?.totalCommitsLastYear}}</div>
+                    <div style="display: flex; align-items: center" v-if="card1?.totalCommitsLastYear">{{card1?.totalCommitsLastYear}}</div>
+                    <div style="display: flex; align-items: center" v-else>暂无数据</div>
                   </div>
                 </div>
                 <div style="display: flex; flex: 4; justify-content: center; align-items: center;">
@@ -305,7 +310,7 @@ onMounted(async () => {
   }
   store.commit("changeInitFlag", false)
   const res = await getUserStatistics1(userName.value)
-  card1.value = JSON.parse(JSON.stringify(res))
+  card1.value = JSON.parse(JSON.stringify(res || {}))
 
   // let stringPromise = inferLocationFromRelations("lhccong");
   if (personalList.value.location == null) {

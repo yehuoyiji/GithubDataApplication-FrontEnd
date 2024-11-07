@@ -39,16 +39,16 @@
           </el-select>
         </div>
         <div style="display: flex; flex: 1; align-items: center; justify-content: flex-start">
-          <el-button color="#ffd100" @click="GlobalSearch()" type="success">
+          <el-button color="#ffd100"  @click="GlobalSearch()" type="success">
             搜索<el-icon style="display: flex; align-items: center; justify-content: center; margin-left: 5px"><Search /></el-icon>
           </el-button>
         </div>
       </div>
 
-      <el-scrollbar v-loading="loading" ref="scroll2"  @scroll="handleScroll" height="calc(100vw * 800 / 1920)" always="true">
+      <el-scrollbar ref="scroll2"  @scroll="handleScroll" height="calc(100vw * 800 / 1920)" always="true">
         <div v-for="(user, index) in userList" :key="user.id" class="scrollbar-demo-item userItem">
           <div class="userAvatar">
-            <img :src="user.avatar_url" alt="" style="width: 50px; height: 50px; border-radius: 50%;">
+            <img :src="user?.avatar_url" alt="" style="width: 50px; height: 50px; border-radius: 50%;">
           </div>
           <div class="userInfo">
             <div class="userNameAndLogin">
@@ -63,12 +63,12 @@
                   style="margin-left: 10px"
               />
             </div>
-            <div v-if="user.bio" class="userDesc">
+            <div v-if="user?.bio" class="userDesc">
               <div>{{user?.bio}}</div>
             </div>
             <div class="userLocation">
 
-                <el-icon style="font-size: 18px; font-weight: bold; color: #000000; margin-right: 5px">
+                <el-icon style="font-size: 18px; font-weight: bold; color: var(--repository-description-color); margin-right: 5px">
                   <Location/>
                 </el-icon>
                 <div> {{user.location}}</div>
@@ -76,11 +76,12 @@
             </div>
           </div>
           <div class="userAction">
-            <el-button color="#ffd100" @click="toPersonalPage(user.login)" type="success">
+            <el-button color="#ffd100" @click="toPersonalPage(user?.login)" type="success">
               查看主页<el-icon class="el-icon--right"><ArrowRight /></el-icon>
             </el-button>
           </div>
         </div>
+        <div style="margin-top: 50px" v-loading="loading"></div>
       </el-scrollbar>
 
     </div>

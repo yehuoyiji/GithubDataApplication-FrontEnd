@@ -1,13 +1,14 @@
 <template>
   <div class="StatisticalCard2">
     <div style="display:flex; flex: 1; justify-content: center; align-items: center; flex-direction: column">
-      <el-statistic style="font-size: 18px" title="公开仓库数" :value="user_data?.repositoryCount"/>
+      <el-statistic style="font-size: 18px" title="公开仓库数" :value="user_data?.repositoryCount || '暂无数据'"/>
+
     </div>
     <div style="display:flex; flex: 1; justify-content: center; align-items: center; flex-direction: column">
-      <el-statistic title="总粉丝数" :value="user_data?.followerCount"></el-statistic>
+      <el-statistic title="总粉丝数" :value="user_data?.followerCount || '暂无数据'"></el-statistic>
     </div>
     <div style="display:flex; flex: 1; justify-content: center; align-items: center; flex-direction: column">
-      <el-statistic title="总关注数" :value="user_data?.followingCount"/>
+      <el-statistic title="总关注数" :value="user_data?.followingCount || '暂无数据'"/>
     </div>
 
   </div>

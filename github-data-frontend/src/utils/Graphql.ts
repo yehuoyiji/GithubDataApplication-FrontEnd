@@ -145,12 +145,12 @@ const getUserStatistics1 = async (username: string) => {
         // 获取总 Star 数量
         const repositoriesQuery = getRepositoriesQuery(username);
         const repositoriesData = await fetchData(repositoriesQuery);
-        const totalStars = repositoriesData.user.repositories.edges.reduce((acc: number, repo: any) => acc + repo.node.stargazerCount, 0);
+        const totalStars = repositoriesData.user?.repositories.edges.reduce((acc: number, repo: any) => acc + repo.node.stargazerCount, 0);
 
         // 获取提交数
         const commitQuery = getCommitContributionsQuery(username);
         const commitData = await fetchData(commitQuery);
-        const totalCommits = commitData.user.contributionsCollection.commitContributionsByRepository
+        const totalCommits = commitData.user?.contributionsCollection.commitContributionsByRepository
             .reduce((acc: number, repo: any) => acc + repo.contributions.totalCount, 0);
 
         // 获取指出问题的 Issue 数量
@@ -166,11 +166,11 @@ const getUserStatistics1 = async (username: string) => {
 
         const contributionsLastYearQuery = getContributionsLastYearQuery(username, lastYearStart.toISOString(), lastYearEnd.toISOString());
         const lastYearData = await fetchData(contributionsLastYearQuery);
-        const totalCommitsLastYear = lastYearData.user.contributionsCollection.commitContributionsByRepository
+        const totalCommitsLastYear = lastYearData.user?.contributionsCollection.commitContributionsByRepository
             .reduce((acc: number, repo: any) => acc + repo.contributions.totalCount, 0);
-        const totalPRsLastYear = lastYearData.user.contributionsCollection.pullRequestContributionsByRepository
+        const totalPRsLastYear = lastYearData.user?.contributionsCollection.pullRequestContributionsByRepository
             .reduce((acc: number, repo: any) => acc + repo.contributions.totalCount, 0);
-        const totalIssuesLastYear = lastYearData.user.contributionsCollection.issueContributionsByRepository
+        const totalIssuesLastYear = lastYearData.user?.contributionsCollection.issueContributionsByRepository
             .reduce((acc: number, repo: any) => acc + repo.contributions.totalCount, 0);
 
         return {
