@@ -30,7 +30,7 @@
               </el-skeleton>
             </div>
             <div style="display: flex; flex: 7">
-              <el-skeleton :animated="true" :loading="loading" >
+              <el-skeleton :animated="true" :loading="loading">
                 <template #template>
                   <div style="padding-right: 20px">
                     <el-skeleton style="padding: 20px -50px 0 40px;" :rows="12"></el-skeleton>
@@ -38,9 +38,14 @@
                 </template>
                 <template #default>
                   <div class="personDetail">
-                    <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; color: var(--text-color)">{{ personalList.name }}</div>
+                    <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; color: var(--text-color)">
+                      {{ personalList.name }}
+                    </div>
                     <div style="font-size: 1rem; color: #999; margin-bottom: 10px;">{{ personalList?.login }}</div>
-                    <div style="font-size: 1rem; color: var(--text-color); margin-bottom: 10px"> {{ personalList?.bio }}</div>
+                    <div style="font-size: 1rem; color: var(--text-color); margin-bottom: 10px"> {{
+                        personalList?.bio
+                      }}
+                    </div>
                     <div style="margin-bottom: 5px; display: flex; align-items: center; color: var(--text-color)">
                       <a-space>
                         <el-icon>
@@ -76,55 +81,67 @@
 
               <div
                   style="display:flex; padding: 15px; flex: 1; border-radius: 15px; margin-right: 10px;background: -webkit-linear-gradient(left top, #EC6C6C,#FFD479,#FFFC79,#73FA79); font-size: calc(100vw * 16 / 1920);">
-                <div style="display: flex; flex: 6; flex-direction: column; margin-right: 10px; font-weight: 700; margin-left: 10px">
+                <div
+                    style="display: flex; flex: 6; flex-direction: column; margin-right: 10px; font-weight: 700; margin-left: 10px">
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
                       <a-space>
-                        <el-icon><Star /></el-icon>
+                        <el-icon>
+                          <Star/>
+                        </el-icon>
                         <span>获取星数（star）:</span>
                       </a-space>
                     </div>
-                    <div style="display: flex; align-items: center">7</div>
+                    <div style="display: flex; align-items: center">{{card1?.totalStars}}</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
                       <a-space>
-                        <el-icon><Coin /></el-icon>
+                        <el-icon>
+                          <Coin/>
+                        </el-icon>
                         <span>累计提交数（commit）:</span>
                       </a-space>
                     </div>
-                    <div style="display: flex; align-items: center">66</div>
+                    <div style="display: flex; align-items: center">{{card1?.totalCommits}}</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
                       <a-space>
-                        <el-icon><Connection /></el-icon>
+                        <el-icon>
+                          <Connection/>
+                        </el-icon>
                         <span>拉取请求数（PR）:</span>
                       </a-space>
                     </div>
-                    <div style="display: flex; align-items: center">2</div>
+                    <div style="display: flex; align-items: center">{{card1?.totalPRCount}}</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
                       <a-space>
-                        <el-icon><Warning /></el-icon>
+                        <el-icon>
+                          <Warning/>
+                        </el-icon>
                         <span>指出问题数（issue）:</span>
                       </a-space>
                     </div>
-                    <div style="display: flex; align-items: center">7</div>
+                    <div style="display: flex; align-items: center">{{card1?.totalIssues}}</div>
                   </div>
                   <div style="display: flex; flex: 1; justify-content: space-between">
                     <div style="display: flex; align-items: center">
                       <a-space>
-                        <el-icon><Collection /></el-icon>
+                        <el-icon>
+                          <Collection/>
+                        </el-icon>
                         <span>贡献于（去年）:</span>
                       </a-space>
                     </div>
-                    <div style="display: flex; align-items: center">2</div>
+                    <div style="display: flex; align-items: center">{{card1?.totalCommitsLastYear}}</div>
                   </div>
                 </div>
                 <div style="display: flex; flex: 4; justify-content: center; align-items: center;">
-                  <el-progress stroke-width="7" :striped="true" :striped-flow="true" type="dashboard" :percentage="80" color="#f56c6c">
+                  <el-progress stroke-width="7" :striped="true" :striped-flow="true" type="dashboard" :percentage="80"
+                               color="#f56c6c">
                     <template #default="{ percentage }">
                       <span class="percentage-value" v-if="percentage >= 0 && percentage <= 30">
                         C
@@ -135,7 +152,7 @@
                       <span class="percentage-value" v-if="percentage > 60 && percentage <= 100">
                         A
                       </span>
-<!--                      <span class="percentage-label">Progressing</span>-->
+                      <!--                      <span class="percentage-label">Progressing</span>-->
                     </template>
                   </el-progress>
                 </div>
@@ -143,28 +160,54 @@
               <div
                   style="display:flex; flex: 1;border-radius: 15px; margin-left: 10px;background: -webkit-linear-gradient(left top, #73FA79,#73FDFF,#D783FF); padding: 15px; width: 100%">
                 <StatisticalCard2></StatisticalCard2>
-              </div>
+                </div>
             </div>
-            <div style="display:flex; flex: 7; height: 100%; width: 100%; margin-top: 5px">
-              <div style="width: 100%; height: 100%; ">
-                <el-scrollbar  style="height: calc(100vw * 560 / 1920);overflow-x: hidden; width: 100%">
-                  <div v-for="item in 100" :key="item" class="scrollbar-demo-item">
-<!--                    <div style="width: 100%; height: 100%; display: flex;  flex-direction: column">-->
-<!--                      <div style="display: flex; flex: 1; justify-content: space-between; align-items: center">-->
-<!--                        <div>滴水表-->
-<!--                        </div>-->
-<!--                        <div>-->
-<!--                          <div style="border: 1px solid #d1d9e0; padding: 2px; border-radius: 5px">-->
-<!--                            public-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                      <div style="display: flex; flex: 3">a</div>-->
-<!--                      <div style="display: flex; flex: 1">a</div>-->
-<!--                    </div>-->
+            <div style="display:flex; flex: 7; height: 100%; width: 100%; margin-top: 5px;  overflow-x: hidden;">
+              <div style="width: 100%; height: 100%;   overflow-x: hidden;">
+                <el-scrollbar style="height: calc(100vw * 560 / 1920);overflow-x: hidden; width: 100%; ">
+                  <div v-for="item in RepositoryData" :key="item" class="scrollbar-demo-item">
+                    <!--                    <div style="width: 100%; height: 100%; display: flex;  flex-direction: column">-->
+                    <!--                      <div style="display: flex; flex: 1; justify-content: space-between; align-items: center">-->
+                    <!--                        <div>滴水表-->
+                    <!--                        </div>-->
+                    <!--                        <div>-->
+                    <!--                          <div style="border: 1px solid #d1d9e0; padding: 2px; border-radius: 5px">-->
+                    <!--                            public-->
+                    <!--                          </div>-->
+                    <!--                        </div>-->
+                    <!--                      </div>-->
+                    <!--                      <div style="display: flex; flex: 3">a</div>-->
+                    <!--                      <div style="display: flex; flex: 1">a</div>-->
+                    <!--                    </div>-->
+                    <div style="width: 100%; height: 100%; padding: 0 20px; display: flex; flex-direction: column">
+                      <div style="color: var(--repository-name-color); font-size: 18px; flex: 1;display: flex; align-items: center">{{ item.name }}</div>
+                      <div style="color: var(--repository-description-color); flex: 1;display: flex; align-items: center">{{ item.description }}</div>
+                      <div v-if="item?.topics.length > 0" style="flex: 1;display: flex; align-items: center">
+                        <a-space>
+                          <span v-for="topic in item?.topics">
+                            <span style="background-color: #ddf4ff; font-weight: 500; border: 0; padding: 5px 10px; border-radius: 15px; color: #0969da"> {{ topic }}</span>
+                        </span>
+                        </a-space>
+
+                      </div>
+                      <div
+                          style="flex: 1; display: flex; gap: 8px; flex-wrap: wrap; align-items: center">
+                        <div style="display: flex; gap: 4px; align-items: center" v-if="item.language">
+                          <div style="width: 10px; height: 10px; border-radius: 50%; background-color: #f56c6c;">
+                          </div>
+                          <span style="color: #59636e">{{item?.language}}</span>
+                        </div>
+                        <span v-if="item.language">•</span>
+                        <div style="display: flex; gap: 4px; align-items: center" >
+                          <el-icon><Star /></el-icon>
+                          <span style="color: #59636e">{{item?.stargazers_count}}</span>
+                        </div>
+<!--                        <span>•</span>-->
+                      </div>
+                    </div>
                   </div>
                 </el-scrollbar>
-<!--                <TransparentBar3D></TransparentBar3D>-->
+                <!--                <TransparentBar3D></TransparentBar3D>-->
               </div>
 
             </div>
@@ -181,13 +224,15 @@
 
 import {IconSearch} from "@arco-design/web-vue/es/icon";
 import {onBeforeUnmount, onMounted, onUnmounted, ref} from "vue";
-import {getGitHubMsgByName} from "@/api/serach";
+import {getGitHubMsgByName, getRepositoryByName} from "@/api/serach";
 import {Message} from "@arco-design/web-vue";
 import {Location, Link, Star, Coin, Connection, Warning, Collection} from "@element-plus/icons-vue";
 import StatisticalCard2 from "@/components/StatisticalCard2.vue";
 
 import {useStore} from "vuex";
 import Bus from "@/utils/Bus";
+
+import getUserStatistics1 from "@/utils/Graphql";
 
 const userName = ref('')
 const isSearchTrue = ref(false)
@@ -215,8 +260,12 @@ const search = async (userName: string) => {
   }
   loading.value = false
 }
-
-
+const RepositoryData = ref([])
+const allStarCount = ref(0)
+const getRepositoryData = async (userName: string) => {
+  const res = await getRepositoryByName(userName);
+  RepositoryData.value = res.data
+}
 const initPersonalPage = async () => {
 
   loading.value = true
@@ -269,27 +318,36 @@ const initPersonalPage = async () => {
 }
 
 const userLogin = ref('')
-// const userLogin = inject<any>("userLogin")
+
 onBeforeUnmount(() => {
   Bus.on("userLogin", (data) => {
     userLogin.value = data as any
     userName.value = userLogin.value
     search(userLogin.value)
+    getRepositoryData(userName.value)
   })
-
 })
 Bus.on("userLogin", (data) => {
-  alert(data)
+  // alert(data)
   userLogin.value = data as any
   userName.value = userLogin.value
   search(userLogin.value)
+  getRepositoryData(userName.value)
+
 })
+const card1 = ref()
 onMounted(async () => {
   if (userName.value == '') {
     userName.value = store.state.userLogin
     await search(userName.value)
+    await getRepositoryData(userName.value)
   }
   store.commit("changeInitFlag", false)
+  const res = await getUserStatistics1("yehuoyiji")
+  card1.value = JSON.parse(JSON.stringify(res))
+  // const res = await getUserStatistics("cool-icu0")
+  // console.log(res)
+  console.log(card1.value)
 })
 onUnmounted(() => {
   Bus.off("userLogin")
@@ -319,36 +377,45 @@ onUnmounted(() => {
   flex: 9;
   flex-direction: column;
 }
+
 .percentage-value {
   display: block;
   //margin-top: 10px;
   font-size: calc(100vw * 36 / 1920);
 }
+
 .scrollbar-demo-item {
   display: inline-block;
   height: calc(100vw * 160 / 1920);
-  margin: 10px;
-  width: calc(100vw * 655 / 1920);
+  //margin: 10px 0 10px 0;
+  //width: calc(100vw * 642 / 1920);
+  width: 96.5%;
   border-radius: 10px;
   //background: #f6e1e1;
   border: 1px solid #d1d9e0;
   color: #000000;
+
 }
+
 .scrollbar-demo-item[data-v-4e773cc2] {
   margin: 10px 10px 10px 0;
 }
+
 .percentage-label {
   display: block;
   margin-top: 10px;
   font-size: calc(100vw * 12 / 1920);
 }
+
 .demo-progress .el-progress--line {
   margin-bottom: 15px;
   max-width: 600px;
 }
+
 .demo-progress .el-progress--circle {
   margin-right: 15px;
 }
+
 .MainContent {
 
 }
