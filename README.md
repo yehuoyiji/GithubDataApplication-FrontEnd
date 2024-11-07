@@ -30,3 +30,4 @@
 
 # 演示视频
 [演示视频仓库位置](https://github.com/yehuoyiji/GithubDataApplication-FrontEnd/blob/master/github-data-frontend/src/assets/%E6%BC%94%E7%A4%BADemo.mp4)
+> 提示：需要点击view raw下载视频才能观看
